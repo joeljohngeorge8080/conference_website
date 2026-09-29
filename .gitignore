@@ -1,0 +1,7 @@
+# Large archives and deployment/SSL files
+*.zip
+**/.well-known/
+# Local screenshots
+original_college_site/screenshots/
+# Old unlinked 64 MB IDIC brochure
+original_college_site/idic/brochure/Brochure_v01.pdf

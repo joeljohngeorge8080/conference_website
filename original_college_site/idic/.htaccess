@@ -1,0 +1,7 @@
+
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^www\.senergy25\.mbccet\.in$
+RewriteRule ^/?$ "https\:\/\/senergy25\.mbccet\.in\/" [R=302,L]
+
