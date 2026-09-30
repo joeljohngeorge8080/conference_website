@@ -1,5 +1,15 @@
 jQuery(document).ready(function( $ ) {
 
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Anchor scroll length scales with distance: short hops feel instant,
+  // long jumps stay readable (was a flat 1500ms).
+  function scrollDuration(targetTop) {
+    if (reducedMotion) { return 0; }
+    var distance = Math.abs(targetTop - $(window).scrollTop());
+    return Math.round(Math.min(900, Math.max(450, distance * 0.25)));
+  }
+
   // Back to top button
   $(window).scroll(function() {
     if ($(this).scrollTop() > 100) {
@@ -9,7 +19,7 @@ jQuery(document).ready(function( $ ) {
     }
   });
   $('.back-to-top').click(function(){
-    $('html, body').animate({scrollTop : 0},1500, 'easeInOutExpo');
+    $('html, body').animate({scrollTop : 0}, scrollDuration(0), 'easeInOutCubic');
     return false;
   });
 
@@ -105,9 +115,10 @@ jQuery(document).ready(function( $ ) {
           }
         }
 
-        $('html, body').animate({
-          scrollTop: target.offset().top - top_space
-        }, 1500, 'easeInOutExpo');
+        var targetTop = target.offset().top - top_space;
+        $('html, body').stop().animate({
+          scrollTop: targetTop
+        }, scrollDuration(targetTop), 'easeInOutCubic');
 
         if ($(this).parents('.nav-menu').length) {
           $('.nav-menu .menu-active').removeClass('menu-active');
@@ -143,5 +154,128 @@ jQuery(document).ready(function( $ ) {
   })
 
 // custom code
+
+  // Read more / show less for the institution blurbs.
+  // Starts collapsed only once JS runs, so the full text stays readable without it.
+  // Labels default to Read more / Show less; a button can set its own
+  // with data-label-closed / data-label-open (committee lists).
+  $('.tf-toggle').each(function () {
+    var $btn = $(this);
+    var $more = $('#' + $btn.attr('aria-controls'));
+    var closed = $btn.data('label-closed') || 'Read more';
+    var open_ = $btn.data('label-open') || 'Show less';
+    function set(open) {
+      $more.toggleClass('is-collapsed', !open);
+      $btn.attr('aria-expanded', open ? 'true' : 'false');
+      $btn.find('.tf-toggle-label').text(open ? open_ : closed);
+    }
+    set(false);
+    $btn.on('click', function () { set($btn.attr('aria-expanded') !== 'true'); });
+  });
+
+  // Hero arrival. The <head> arms it (.js-arrival); this plays it once the
+  // campus photos can paint. With <html data-await-arrival>, it waits for the
+  // Earth experience to call document.dispatchEvent(new Event('sjb:arrive')).
+  ;(function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('js-arrival')) { return; }
+    var imgs = document.querySelectorAll('#intro .sj-campus img');
+
+    function photosReady() {
+      var waits = Array.prototype.map.call(imgs, function (img) {
+        if (!img.decode) { return Promise.resolve(); }
+        return img.decode().catch(function () {
+          // A broken photo still shows its alt text; it must not hold the entrance
+          console.warn('Hero photo failed to load:', img.currentSrc || img.src);
+        });
+      });
+      var cap = new Promise(function (resolve) { setTimeout(resolve, 1500); });
+      return Promise.race([Promise.all(waits), cap]);
+    }
+    function play() {
+      photosReady().then(function () {
+        window.requestAnimationFrame(function () { root.classList.add('is-arrived'); });
+      });
+    }
+
+    if (root.hasAttribute('data-await-arrival')) {
+      document.addEventListener('sjb:arrive', play, { once: true });
+    } else {
+      play();
+    }
+  })();
+
+  // Scroll-linked chrome: reading progress bar, header that hides while
+  // scrolling down and returns on scroll up, nav highlight of the section
+  // in view, and the venue photo parallax. One rAF-throttled handler.
+  ;(function () {
+    var $header = $('#header');
+    var progress = document.querySelector('.tf-progress');
+    var lastY = window.pageYOffset, ticking = false;
+    var parallax = reducedMotion ? [] : Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+
+    var links = $('.nav-menu a[href^="#"], #mobile-nav a[href^="#"]');
+    var sections = links.map(function () { return $(this.hash)[0]; }).get()
+      .filter(function (el, i, all) { return el && all.indexOf(el) === i; });
+
+    function frame() {
+      ticking = false;
+      var y = window.pageYOffset;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progress) { progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')'; }
+
+      var hide = y > window.innerHeight * 0.6 && y > lastY + 4 && !$('body').hasClass('mobile-nav-active');
+      if (hide) { $header.addClass('is-hidden'); } else if (y < lastY - 4 || y < 100) { $header.removeClass('is-hidden'); }
+      lastY = y;
+
+      var probe = y + window.innerHeight * 0.35, current = null;
+      sections.forEach(function (el) { if ($(el).offset().top <= probe) { current = el.id; } });
+      links.each(function () {
+        $(this).closest('li').toggleClass('menu-active', this.hash === '#' + current);
+      });
+
+      // Photos drift against the scroll by up to 6% while their frame is on
+      // screen. Measure everything first, then write, to avoid layout thrash.
+      var vh = window.innerHeight;
+      var shifts = parallax.map(function (img) {
+        var r = img.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) { return null; }
+        var p = (r.top + r.height / 2 - vh / 2) / vh;
+        return Math.max(-1, Math.min(1, p)) * -6;
+      });
+      parallax.forEach(function (img, i) {
+        if (shifts[i] !== null) { img.style.transform = 'translate3d(0,' + shifts[i].toFixed(2) + '%,0)'; }
+      });
+    }
+
+    $(window).on('scroll resize', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+    });
+    // Keyboard users tabbing into the header should always see it
+    $header.on('focusin', function () { $header.removeClass('is-hidden'); });
+    frame();
+  })();
+
+  // Important dates enter one by one, in order, and the venue photos wipe in,
+  // the first time each scrolls into view. Content is only hidden once JS has
+  // confirmed it can reveal it again.
+  ;(function () {
+    var dates = document.querySelectorAll('.sj-timeline > li');
+    var media = document.querySelectorAll('[data-reveal-media]');
+    if (reducedMotion || !('IntersectionObserver' in window)) { return; }
+    document.documentElement.classList.add('tf-reveal-ready');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) { return; }
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    Array.prototype.forEach.call(dates, function (el, i) {
+      el.style.transitionDelay = i * 80 + 'ms';
+      io.observe(el);
+    });
+    Array.prototype.forEach.call(media, function (el) { io.observe(el); });
+  })();
 
 });
