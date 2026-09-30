@@ -1092,3 +1092,17 @@ body.mobile-nav-active { overflow: hidden; }
   .sj-title { font-size: 2.9rem; }
   .tf-cta-row .ui-btn { flex: 1 1 100%; }
 }
+
+/*---------------- Justified body text ----------------*/
+/* About the conference, both institutions, and the two venue places.
+   hyphens keeps word gaps even in the narrow columns; the bold institution
+   name line above each blurb stays ragged-right. */
+#about .tf-lede,
+.tf-prose p:not(:first-child),
+.tf-prose .tf-more-inner p,
+.sj-place-text p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
