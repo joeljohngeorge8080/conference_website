@@ -1039,7 +1039,7 @@ body.mobile-nav-active { overflow: hidden; }
 
   .sj-split,
   .sj-notes { grid-template-columns: 1fr; }
-  .sj-split-head { position: static; }
+  .sj-split-head { position: relative; top: auto; }
   .sj-notes .tf-list, .sj-notes .tf-pending, .tf-subhead { grid-column: 1; }
 
   /* Stage: campuses stacked above the text so both stay recognisable */
@@ -1106,3 +1106,41 @@ body.mobile-nav-active { overflow: hidden; }
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+
+/*---------------- Venue teaser (home) and /venue page ---------------- */
+.sj-teasers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px clamp(32px, 5vw, 72px);
+}
+.sj-teaser .sj-place-media { aspect-ratio: 4 / 3; margin-bottom: 24px; }
+.sj-teaser .sj-place-media img { top: 0; height: 100%; }
+.sj-teaser h3 { font-size: clamp(2rem, 3.2vw, 2.75rem); margin-bottom: 6px; color: var(--turmeric); }
+.sj-teaser p { color: var(--on-dark-soft); font-size: 1rem; }
+.sj-teaser .sj-teaser-date { color: var(--on-dark); font-weight: 600; margin-bottom: 12px; }
+.sj-teaser-cta { margin-top: clamp(40px, 5vw, 64px); }
+.sj-sea .sj-back a { color: var(--on-dark); }
+.sj-sea .sj-back a:hover { color: var(--turmeric); }
+@media (max-width: 767px) { .sj-teasers { grid-template-columns: 1fr; } }
+
+
+/*---------------- Scroll paper (WebGL) ----------------
+   One fixed canvas holds the paper for the whole page. It sits above the
+   hero UI and below the header and never takes pointer events. */
+.sj-paper-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+.sj-paper-canvas.is-ready { opacity: 1; }
+
+/* Landing spot in Call for Papers: an empty box in the margin beside the
+   heading (size and offsets are set by js/paper/paperScroll.js). The paper
+   copies its rect every frame, so it stays pinned with the sticky column. */
+.sj-paper-slot { position: absolute; pointer-events: none; }
+.no-paper .sj-paper-slot { display: none; }

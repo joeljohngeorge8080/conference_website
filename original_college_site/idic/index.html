@@ -70,7 +70,7 @@
           <li><a href="#schedule">Dates</a></li>
           <li><a href="#speakers">Speakers</a></li>
           <li><a href="committee/">Committee</a></li>
-          <li><a href="#venue">Venue</a></li>
+          <li><a href="venue/">Venue</a></li>
           <li><a href="#contact">Contact</a></li>
           <li class="buy-tickets"><a href="#registration">Registration</a></li>
         </ul>
@@ -220,6 +220,7 @@
             <div class="section-header">
               <h2>Call for Papers</h2>
             </div>
+            <div class="sj-paper-slot" data-paper-slot aria-hidden="true"></div>
           </div>
           <div class="sj-split-body">
             <ol class="tf-tracks">
@@ -337,7 +338,7 @@
     </section>
 
     <!--==========================
-      Venue: Peermade and Mangaluru
+      Venue: short teaser, full details on /venue
     ============================-->
     <section id="venue" class="sj-section sj-sea">
       <div class="container">
@@ -346,46 +347,29 @@
           <p>Presentations will be held at MBCCET, Peermade, on 27th May, and at SJEC, Mangalore, on 29th May.</p>
         </div>
 
-        <article class="sj-place">
-          <figure class="sj-place-media" data-reveal-media>
-            <img src="img/hero/college-1.jpg" width="1920" height="1010" alt="MBCCET campus, Kuttikkanam, Peermade" loading="lazy" decoding="async" data-parallax>
-            <figcaption>MBCCET, Kuttikkanam, Peermade</figcaption>
-          </figure>
-          <div class="sj-place-text">
-            <h3>About Peermade, Kerala</h3>
-            <p>Nestled in the serene hill station of Kuttikkanam in Idukki district, the campus is surrounded by lush tea plantations, spice gardens, rolling hills, and mist-covered valleys. The region enjoys a cool and pleasant climate for most of the year, making it an ideal destination for academic pursuits, conferences, and scholarly interactions. The refreshing mountain air, abundant greenery, and tranquil atmosphere provide an inspiring environment for learning, research, and innovation.</p>
-            <p>Peermade and its surrounding areas are among Kerala's most attractive tourist destinations. Delegates visiting MBCCET can explore renowned attractions such as Vagamon, known for its picturesque meadows and pine forests; Thekkady and Periyar Wildlife Sanctuary, famous for rich biodiversity and wildlife; Panchalimedu, a scenic hilltop viewpoint; and Parunthumpara, celebrated for its breathtaking panoramic views of the Western Ghats. The region's sprawling tea, coffee, and cardamom plantations add to its unique charm and natural beauty. The renowned tourist destination, Munnar, is also in close proximity.</p>
-          </div>
-        </article>
+        <div class="sj-teasers">
+          <article class="sj-teaser">
+            <figure class="sj-place-media" data-reveal-media>
+              <img src="img/hero/college-1.jpg" width="1920" height="1010" alt="MBCCET campus, Kuttikkanam, Peermade" loading="lazy" decoding="async">
+              <figcaption>MBCCET, Kuttikkanam, Peermade</figcaption>
+            </figure>
+            <h3>Peermade, Kerala</h3>
+            <p class="sj-teaser-date">27 May 2027</p>
+            <p>A hill station in Idukki district, surrounded by tea plantations, spice gardens and mist-covered valleys.</p>
+          </article>
+          <article class="sj-teaser">
+            <figure class="sj-place-media" data-reveal-media>
+              <img src="img/hero/college-2.jpg" width="1920" height="538" alt="SJEC campus, Vamanjoor, Mangaluru" loading="lazy" decoding="async">
+              <figcaption>SJEC, Vamanjoor, Mangaluru</figcaption>
+            </figure>
+            <h3>Mangaluru, Karnataka</h3>
+            <p class="sj-teaser-date">29 May 2027</p>
+            <p>A vibrant coastal city on the Arabian Sea, known for education, commerce, culture and its coastal cuisine.</p>
+          </article>
+        </div>
 
-        <article class="sj-place sj-place-flip">
-          <figure class="sj-place-media" data-reveal-media>
-            <img src="img/hero/college-2.jpg" width="1920" height="538" alt="SJEC campus, Vamanjoor, Mangaluru" loading="lazy" decoding="async" data-parallax>
-            <figcaption>SJEC, Vamanjoor, Mangaluru</figcaption>
-          </figure>
-          <div class="sj-place-text">
-            <h3>About Mangaluru, Karnataka</h3>
-            <p>Mangaluru, the headquarters of Dakshina Kannada district, is a vibrant coastal city situated along the Arabian Sea in Karnataka. Known as an important centre for education, commerce and culture, the city attracts students and professionals from across India and abroad. Mangaluru combines the character of a historic port city with a modern urban environment and is known for its beaches, places of worship, distinctive architecture, local markets and rich culinary traditions.</p>
-            <p>The city and the surrounding coastal region offer delegates an opportunity to experience the natural and cultural diversity of Karnataka's coast. Attractions in and around Mangaluru include scenic beaches, heritage and religious sites, lush landscapes and the distinctive traditions of coastal Karnataka. The region is also known for cultural forms such as Yakshagana and for its unique coastal cuisine. With the Arabian Sea to the west and the Western Ghats forming the broader eastern landscape of Dakshina Kannada, Mangaluru provides an attractive setting for academic interaction, networking and cultural exploration.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!--==========================
-      Gallery (placeholder)
-    ============================-->
-    <section id="gallery" class="sj-section sj-mist sj-compact">
-      <div class="container">
-        <div class="sj-split">
-          <div class="sj-split-head">
-            <div class="section-header">
-              <h2>Gallery</h2>
-            </div>
-          </div>
-          <div class="sj-split-body">
-            <div class="tf-placeholder">Photos will be added soon.</div>
-          </div>
+        <div class="tf-cta-row sj-teaser-cta">
+          <a href="venue/" class="ui-btn">Full venue details <span class="ui-btn-icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </div>
       </div>
     </section>
@@ -524,6 +508,11 @@
 
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
+
+  <!-- Scroll-driven WebGL paper (hero -> crumple -> Call for Papers). Vendored three.js + GSAP, no build step. -->
+  <script src="lib/gsap/gsap.min.js"></script>
+  <script src="lib/gsap/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/paper/paperScroll.js"></script>
 </body>
 
 </html>
