@@ -13,6 +13,8 @@
  *           the page without touching any text
  *   dock    drops into the left margin beside the "Call for Papers" heading,
  *           tilted the other way, still crumpled
+ *   unfold  once docked it opens back up into the flat marked sheet,
+ *           while pinned (the sheet's original form, original tilt)
  *   pinned  from then on the pose is the live rect of [data-paper-slot],
  *           which sits in the sticky heading column, so the paper stays
  *           pinned while the track list scrolls and releases with the column
@@ -24,7 +26,7 @@
  * back to a smaller paper along the right edge, docking in a reserved box below the heading.
  */
 import { createPaperScene } from './paperScene.js';
-import { wrapAt, tAt, tumbleAt } from './paperTimeline.js';
+import { wrapAt, tAt, tumbleAt, unfoldAt } from './paperTimeline.js';
 
 const gsap = window.gsap;
 const ScrollTrigger = window.ScrollTrigger;
@@ -38,7 +40,7 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CM = 96 / 2.54;                 // CSS pixels per cm
 const PAPER_W_MAX = 4 * CM;           // 4 cm wide, 6 cm tall at full size
 const TILT_START = -0.13;             // rad, flat sheet beside the stat strip
-const TILT_END = 0.16;                // rad, crumpled ball beside the heading
+const TILT_END = 0.16;                // rad, crumpled ball as it docks beside the heading
 const sm = (x) => x * x * (3 - 2 * x);
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 
@@ -77,7 +79,7 @@ function start() {
   const head = slot.parentElement;
   let vw = 0, vh = 0;
   let L = null;                         // measured layout, see layout()
-  const state = { p: 0 };               // scrubbed 0..1 across [0, L.sEnd]
+  const state = { p: 0 };               // scrubbed 0..1 across [0, L.sUnfold]
   let dirty = true;
   let lost = false;
   let raf = 0;
@@ -141,7 +143,9 @@ function start() {
       sEnd = Math.max(slotCenterDoc - laneY, s1 + vh * 0.8);
     }
 
-    L = { gutter, w, h, startX, startDocY, laneY, bandDoc, s0, s1, sx, dur, sEnd };
+    const sUnfold = sEnd + vh * 0.5;                     // flat again
+
+    L = { gutter, w, h, startX, startDocY, laneY, bandDoc, s0, s1, sx, dur, sEnd, sUnfold };
     dirty = true;
   }
 
@@ -156,9 +160,11 @@ function start() {
       return { x: slotX, y: slotY, size: r.height, wrap: 0, rx: 0, ry: 0, rz: TILT_END, shadow: 1, visible: inView(slotY, r.height) };
     }
 
-    const scroll = state.p * L.sEnd;
+    const scroll = state.p * L.sUnfold;
     const t = tAt(scroll, L.s0, L.s1);
     const tumble = tumbleAt(scroll, L.s1, L.sEnd, TILT_START, TILT_END);
+    const unf = unfoldAt(scroll, L.sEnd, L.sUnfold);
+    tumble.rz += (TILT_START - TILT_END) * unf;   // back to the sheet's first tilt
 
     // ride with the page until the lane, then hold; once the empty band
     // arrives at the lane, ride with the band
@@ -178,7 +184,7 @@ function start() {
     if (scroll >= L.sEnd) { x = slotX; y = slotY; }   // pinned: exactly the slot
     return {
       x, y, size: r.height,
-      wrap: wrapAt(t),
+      wrap: wrapAt(t) * (1 - unf),
       rx: tumble.rx, ry: tumble.ry, rz: tumble.rz,
       shadow: 1,
       visible: inView(y, r.height),
@@ -209,7 +215,7 @@ function start() {
       scrollTrigger: {
         trigger: document.documentElement,
         start: 0,
-        end: () => L.sEnd,
+        end: () => L.sUnfold,
         scrub: 0.6,
         invalidateOnRefresh: true,
       },

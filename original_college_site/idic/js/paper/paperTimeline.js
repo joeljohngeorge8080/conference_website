@@ -4,7 +4,8 @@
  * t is the normalised paper animation, tuned against the reference video:
  *   0.00        flat
  *   0.04 - 0.42 crumple to a compact ball
- *   0.42 - 1.00 the ball stays crumpled (it rolls and settles in Call for Papers)
+ *   0.42 - 1.00 the ball stays crumpled while it rolls and docks in Call for Papers,
+ *               then unfolds back to the flat sheet (see unfoldAt)
  */
 const smooth = (a, b, x) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
@@ -36,4 +37,9 @@ export function tumbleAt(scroll, s1, sEnd, tiltStart, tiltEnd) {
     ry: TAU * 2 * u,
     rz: tiltStart + (tiltEnd - tiltStart) * u + 0.4 * Math.sin(TAU * u),
   };
+}
+
+/** 0 while the ball travels and docks, 0 -> 1 as it unfolds over [sEnd, sUnfold] */
+export function unfoldAt(scroll, sEnd, sUnfold) {
+  return smooth(sEnd, sUnfold, scroll);
 }
