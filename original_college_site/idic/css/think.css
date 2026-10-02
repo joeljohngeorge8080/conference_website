@@ -792,19 +792,38 @@ body.mobile-nav-active { overflow: hidden; }
   line-height: 1;
   border-bottom: 2px dashed var(--mist-2);
 }
-.sj-fee dl { margin: 0; padding: 20px 24px 26px; }
-.sj-fee dl > div { display: flex; flex-direction: column-reverse; }
-.sj-fee dl > div + div { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--mist-2); }
-.sj-fee dt { font-size: 0.875rem; font-weight: 500; color: var(--text-soft); }
+.sj-fee dl { margin: 0; padding: 28px 20px 32px; display: grid; gap: 16px; flex: 1; }
+/* Early Bird and Regular are two highlighted panels of equal size, which
+   lengthens the ticket; each keeps its label above the price. */
+.sj-fee dl > div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 22px 20px 24px;
+  border-left: 4px solid var(--turmeric);
+  background: color-mix(in srgb, var(--turmeric) 28%, transparent);
+}
+.sj-fee dl > div + div {
+  border-left-color: var(--laterite);
+  background: color-mix(in srgb, var(--laterite) 11%, transparent);
+}
+.sj-fee dt {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
 .sj-fee dd {
-  margin: 0 0 2px;
+  margin: 0;
   font-family: var(--display);
   font-weight: 800;
+  font-size: clamp(2.25rem, 3.2vw, 3rem);   /* same for both prices */
   line-height: 1;
   white-space: nowrap;
+  color: var(--laterite);
 }
-.sj-fee dl > div:first-child dd { font-size: clamp(2.5rem, 3.6vw, 3.25rem); color: var(--laterite); }
-.sj-fee dl > div + div dd { font-size: 1.75rem; }
 
 .sj-notes {
   display: grid;
