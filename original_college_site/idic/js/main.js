@@ -278,4 +278,45 @@ jQuery(document).ready(function( $ ) {
     Array.prototype.forEach.call(media, function (el) { io.observe(el); });
   })();
 
+  // Footer wordmark: each letter rises into view in a staggered wave as the
+  // footer scrolls in. Scrubbed, so it sinks back when scrolling up. Skipped
+  // for reduced motion (the mark just sits there).
+  ;(function () {
+    var mark = document.querySelector('.sj-footer-mark');
+    if (!mark || reducedMotion) { return; }
+
+    // split the text (keeping the nested "2027" span) into one span per letter
+    var n = 0;
+    function split(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          Array.prototype.forEach.call(c.textContent, function (ch) {
+            var s = document.createElement('span');
+            s.className = 'sj-ch';
+            s.style.setProperty('--i', n++);
+            s.textContent = ch === ' ' ? '\u00a0' : ch;
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, c);
+        } else if (c.nodeType === 1) { split(c); }
+      });
+    }
+    split(mark.querySelector('.sj-line'));
+
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = mark.getBoundingClientRect(), vh = window.innerHeight;
+      // 0 when the mark's top is at the viewport bottom, 1 once 90% of it is in
+      var p = Math.min(1, Math.max(0, (vh - r.top) / (r.height * 0.9 + 1)));
+      var eased = 1 - Math.pow(1 - p, 3);   // ease-out: letters decelerate as they land
+      mark.style.setProperty('--rise', eased.toFixed(3));
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+
 });

@@ -966,6 +966,25 @@ body.mobile-nav-active { overflow: hidden; }
   white-space: nowrap;
   color: var(--on-dark);
 }
+/* Scroll-up reveal: main.js splits the mark into letters and sets --rise
+   (0 hidden .. 1 shown, eased) from scroll. Each letter starts a little later
+   than the one before (--i), so the word rises as a wave and sinks back the
+   same way when scrolling up. Without JS there are no letters and the mark
+   simply sits there. */
+.sj-footer-mark .sj-line {
+  padding: 0.08em 0; margin: -0.08em 0;
+  /* clip the rising text at the line box, but let the wide mark run past the container sideways */
+  overflow: visible; clip-path: inset(0 -100vw);
+}
+.sj-footer-mark .sj-ch {
+  --q: clamp(0, calc(var(--rise, 1) * 2.2 - var(--i, 0) * 0.1), 1);
+  display: inline-block;
+  transform: translateY(calc((1 - var(--q)) * 115%));
+  opacity: clamp(0, calc(var(--q) * 3), 1);
+  will-change: transform;
+  color: var(--on-dark);   /* .tf-wordmark span would turn every letter yellow */
+}
+.sj-footer-mark .sj-line > span > span:not(.sj-ch) .sj-ch { color: var(--turmeric); }  /* the 2027 */
 .sj-footer-base {
   display: flex;
   flex-wrap: wrap;
