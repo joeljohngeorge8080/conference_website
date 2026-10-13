@@ -82,8 +82,8 @@
             <div class="tf-group">
               <h3>Chief Patrons</h3>
               <ul class="tf-people">
-                <li><strong>H.H. Baselios Marthoma Mathews III</strong><span>President, MBCCET, Peermade, Kerala</span></li>
-                <li><strong>Most Rev. Dr Peter Paul Saldanha</strong><span>Bishop of Mangalore</span></li>
+                <li class="tf-has-photo"><button type="button" class="tf-portrait-btn" aria-label="Enlarge photo of H.H. Baselios Marthoma Mathews III"><img class="tf-portrait" src="../img/committee/baselios-marthoma-mathews-iii.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></button><div><strong>H.H. Baselios Marthoma Mathews III</strong><span>President, MBCCET, Peermade, Kerala</span></div></li>
+                <li class="tf-has-photo"><button type="button" class="tf-portrait-btn" aria-label="Enlarge photo of Most Rev. Dr Peter Paul Saldanha"><img class="tf-portrait" src="../img/committee/peter-paul-saldanha.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></button><div><strong>Most Rev. Dr Peter Paul Saldanha</strong><span>Bishop of Mangalore</span></div></li>
               </ul>
             </div>
 
@@ -91,7 +91,7 @@
               <h3>Patrons</h3>
               <ul class="tf-people">
                 <li><strong>H.G. Metropolitan Zacharia Mar Severios</strong><span>Local Manager, MBCCET, Peermade, Kerala</span></li>
-                <li><strong>Rev Fr. Jithu Thomas</strong><span>Administrator, MBCCET, Peermade, Kerala</span></li>
+                <li class="tf-has-photo"><button type="button" class="tf-portrait-btn" aria-label="Enlarge photo of Rev Fr. Jithu Thomas"><img class="tf-portrait" src="../img/committee/jithu-thomas.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></button><div><strong>Rev Fr. Jithu Thomas</strong><span>Administrator, MBCCET, Peermade, Kerala</span></div></li>
                 <li><strong>Rev Fr. John Samuel</strong><span>Bursar, MBCCET, Peermade, Kerala</span></li>
                 <li><strong>Fr Kenneth Rayner Crasta</strong><span>Assistant Director, SJEC</span></li>
               </ul>
@@ -100,7 +100,7 @@
             <div class="tf-group">
               <h3>Conference Director</h3>
               <ul class="tf-people">
-                <li><strong>Dr. Oomman Mamman</strong><span>Director, MBCCET, Peermade, Kerala</span></li>
+                <li class="tf-has-photo"><button type="button" class="tf-portrait-btn" aria-label="Enlarge photo of Dr. Oomman Mamman"><img class="tf-portrait" src="../img/committee/oomman-mamman.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></button><div><strong>Dr. Oomman Mamman</strong><span>Director, MBCCET, Peermade, Kerala</span></div></li>
                 <li><strong>Rev. Fr Wilfred Prakash D'Souza</strong><span>Director, SJEC</span></li>
               </ul>
             </div>
@@ -108,7 +108,7 @@
             <div class="tf-group">
               <h3>Conference Chairs</h3>
               <ul class="tf-people">
-                <li><strong>Dr. Santhosh Simon</strong><span>Principal, MBCCET, Peermade, Kerala</span></li>
+                <li class="tf-has-photo"><button type="button" class="tf-portrait-btn" aria-label="Enlarge photo of Dr. Santhosh Simon"><img class="tf-portrait" src="../img/committee/santhosh-simon.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></button><div><strong>Dr. Santhosh Simon</strong><span>Principal, MBCCET, Peermade, Kerala</span></div></li>
                 <li><strong>Dr. Rio D'Souza</strong><span>Principal, SJEC</span></li>
               </ul>
             </div>
@@ -216,6 +216,15 @@
     </section>
 
   </main>
+
+  <!-- Enlarged portrait (opened by .tf-portrait-btn, see js/main.js) -->
+  <dialog class="tf-lightbox" aria-label="Enlarged portrait">
+    <figure>
+      <img src="" alt="">
+      <figcaption><strong></strong><span></span></figcaption>
+    </figure>
+    <button type="button" class="tf-lightbox-close" aria-label="Close enlarged photo"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+  </dialog>
 
   <!--==========================
     Footer

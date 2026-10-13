@@ -873,6 +873,72 @@ body.mobile-nav-active { overflow: hidden; }
 .tf-people li { padding: 14px 0; border-top: 1px solid var(--mist-2); }
 .tf-people strong { display: block; font-weight: 600; font-size: 1rem; line-height: 1.35; }
 .tf-people span { display: block; margin-top: 3px; font-size: 0.9rem; line-height: 1.45; color: var(--text-soft); }
+.tf-people li.tf-has-photo { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 16px; align-items: center; }
+.tf-portrait {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 25%;
+  background: var(--mist-2);
+  display: block;
+  transition: box-shadow 0.2s ease;
+}
+.tf-portrait-btn {
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  line-height: 0;
+}
+.tf-portrait-btn:hover .tf-portrait,
+.tf-portrait-btn:focus-visible .tf-portrait { box-shadow: 0 0 0 3px var(--turmeric); }
+
+/* Enlarged portrait */
+html.tf-lb-open { overflow: hidden; }
+.tf-lightbox {
+  width: min(92vw, 520px);
+  max-height: 92vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--on-dark);
+  overflow: visible;
+}
+.tf-lightbox::backdrop { background: rgba(7, 9, 11, 0.88); }
+.tf-lightbox figure { margin: 0; }
+.tf-lightbox img {
+  display: block;
+  width: 100%;
+  max-height: 74vh;
+  object-fit: contain;
+  background: var(--ink-2);
+}
+.tf-lightbox figcaption { padding-top: 14px; }
+.tf-lightbox figcaption strong { display: block; font-weight: 600; font-size: 1.05rem; line-height: 1.35; }
+.tf-lightbox figcaption span { display: block; margin-top: 3px; font-size: 0.9rem; line-height: 1.45; opacity: 0.75; }
+.tf-lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.tf-lightbox-close:hover { color: var(--turmeric); }
+@media (prefers-reduced-motion: no-preference) {
+  .tf-lightbox[open] { animation: tf-lb-in 0.22s ease-out; }
+  .tf-lightbox[open]::backdrop { animation: tf-lb-fade 0.22s ease-out; }
+}
+@keyframes tf-lb-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes tf-lb-fade { from { opacity: 0; } to { opacity: 1; } }
 .tf-group .tf-more .tf-people { margin-top: 0; }
 
 /*---------------- Venue ----------------*/
