@@ -13,7 +13,9 @@ const root = document.documentElement;
 const overlay = document.getElementById('sj-globe');
 const SEEN_KEY = 'sjb-globe-seen';
 
-// Between Mangaluru (12.9N, 74.9E) and Peermade (9.6N, 77.0E)
+// The Earth rests facing South Korea (Seoul), then Dive in carries the view
+// to a spot between Mangaluru (12.9N, 74.9E) and Peermade (9.6N, 77.0E)
+const START = { lat: 37.5, lng: 127.0 };
 const HOST = { lat: 11.2, lng: 76.0 };
 const RADIUS = 100;
 const CAMERA_Z = { rest: 303, hover: 290, dive: RADIUS + 6 };
@@ -67,14 +69,17 @@ async function start() {
   // Too late: the head failsafe already dropped the overlay and showed the hero
   if (finished || !root.classList.contains('sj-globe-on')) { return; }
 
-  // tilt (x) then spin (y) put HOST face-on to the camera when drift is 0;
-  // the sphere's texture seam puts longitude L at a y rotation of -90 - L.
+  // tilt (x) then spin (y) put a place face-on to the camera; the sphere's
+  // texture seam puts longitude L at a y rotation of -90 - L. The idle drift
+  // adds to the spin, so the view creeps slowly east of South Korea.
   const tilt = new THREE.Group();
-  tilt.rotation.x = rad(HOST.lat);
   const spin = new THREE.Group();
   tilt.add(spin);
-  const SPIN_HOST = rad(-90 - HOST.lng);
-  let drift = rad(14);
+  const aim = (place) => ({ tilt: rad(place.lat), spin: rad(-90 - place.lng) });
+  const FROM = aim(START);
+  const TO = aim(HOST);
+  tilt.rotation.x = FROM.tilt;
+  let drift = 0;
 
   const earth = new THREE.Mesh(
     new THREE.SphereGeometry(RADIUS, 96, 96),
@@ -152,13 +157,13 @@ async function start() {
   window.addEventListener('resize', onResize);
 
   let targetZ = CAMERA_Z.rest;
-  let dive = null; // { at, fromZ, fromDrift } once Dive in is pressed
+  let dive = null; // { at, fromZ, fromTilt, fromSpin } once Dive in is pressed
 
   diveBtn.addEventListener('mouseenter', () => { targetZ = CAMERA_Z.hover; });
   diveBtn.addEventListener('mouseleave', () => { targetZ = CAMERA_Z.rest; });
   diveBtn.addEventListener('click', () => {
     if (dive || finished) { return; }
-    dive = { at: performance.now(), fromZ: camera.position.z, fromDrift: drift };
+    dive = { at: performance.now(), fromZ: camera.position.z, fromTilt: tilt.rotation.x, fromSpin: spin.rotation.y };
     hero.classList.add('fade-out-hero');
     footer.classList.add('fade-out-footer');
     window.setTimeout(finish, HANDOVER_MS);
@@ -167,15 +172,16 @@ async function start() {
   let frame = 0;
   (function animate(now) {
     if (dive) {
-      // Fall toward HOST and unwind the idle drift so it ends dead centre
+      // Fall toward HOST while the view swings across from South Korea
       const k = easeInOutCubic(Math.min(1, (now - dive.at) / DIVE_MS));
       camera.position.z = dive.fromZ + (CAMERA_Z.dive - dive.fromZ) * k;
-      drift = dive.fromDrift * (1 - k);
+      tilt.rotation.x = dive.fromTilt + (TO.tilt - dive.fromTilt) * k;
+      spin.rotation.y = dive.fromSpin + (TO.spin - dive.fromSpin) * k;
     } else {
       camera.position.z += (targetZ - camera.position.z) * 0.04;
       drift -= 0.00012;
+      spin.rotation.y = FROM.spin + drift;
     }
-    spin.rotation.y = SPIN_HOST + drift;
     clouds.rotation.y += 0.00008;
 
     renderer.render(scene, camera);
