@@ -507,6 +507,7 @@ body.mobile-nav-active { overflow: hidden; }
   .js-arrival.is-arrived .sj-line:nth-child(1) > span { transition-delay: 0.55s; }
   .js-arrival.is-arrived .sj-line:nth-child(2) > span { transition-delay: 0.65s; }
   .js-arrival.is-arrived .sj-line:nth-child(3) > span { transition-delay: 0.75s; }
+  .js-arrival.is-arrived .sj-line:nth-child(4) > span { transition-delay: 0.85s; }
   .js-arrival.is-arrived .sj-meta,
   .js-arrival.is-arrived .sj-hero-side,
   .js-arrival.is-arrived .sj-campus figcaption {

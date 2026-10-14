@@ -30,11 +30,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/hero/college-1.jpg">
   <link href="css/think.css" rel="stylesheet">
+  <!-- Globe intro (js/globe-intro.js, uses the vendored lib/three): its fonts and styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+  <link href="css/globe-intro.css" rel="stylesheet">
   <!-- Arm the hero arrival before first paint (played by js/main.js).
        Failsafe: if main.js never runs, show the hero anyway after 4s,
-       unless the page is deliberately waiting for 'sjb:arrive'. -->
+       unless the page is deliberately waiting for 'sjb:arrive'.
+       The globe intro plays first on the first visit in this tab, unless the
+       URL targets a section (#about from the other pages) or motion is
+       reduced. It holds the hero (data-await-arrival) and, if its scripts
+       never start within 10s, gets out of the way. -->
   <script>
     (function (r) {
+      var seen = false;
+      try { seen = !!window.sessionStorage.getItem('sjb-globe-seen'); } catch (e) { seen = false; }
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!seen && !reduced && !window.location.hash) {
+        r.classList.add('sj-globe-on');
+        r.setAttribute('data-await-arrival', '');
+        window.sjGlobeFailsafe = setTimeout(function () {
+          r.classList.remove('sj-globe-on');
+          document.dispatchEvent(new Event('sjb:arrive'));
+        }, 10000);
+      }
       r.classList.add('js-arrival');
       setTimeout(function () {
         if (!r.hasAttribute('data-await-arrival')) { r.classList.add('is-arrived'); }
@@ -51,6 +69,61 @@
 </head>
 
 <body>
+
+  <!--==========================
+    Globe intro: the first screen. Hidden unless <html> has .sj-globe-on.
+  ============================-->
+  <div id="sj-globe" aria-label="Welcome to SJ-BIESH 2027">
+    <div class="globe-loader">
+      <div class="globe-brand">SJ-BIESH 2027</div>
+    </div>
+
+    <div class="globe-viz"></div>
+
+    <div class="globe-ui">
+      <div class="globe-header">
+        <div></div>
+        <div class="globe-brand" aria-hidden="true">SJ-BIESH 2027</div>
+        <div><button type="button" class="globe-skip" id="sj-globe-skip">Skip intro</button></div>
+      </div>
+
+      <div class="globe-hero">
+        <div class="hero-header-group">
+          <p class="hero-title">
+            <span class="first-line-wrapper">
+              <span class="sub-tag fade-item item-tag">■ Vision &amp; Innovation</span>
+              <span class="line">
+                <span class="fade-word w-1">A</span>
+                <span class="fade-word w-2">Union</span>
+                <span class="fade-word w-3">of</span>
+              </span>
+            </span>
+            <span class="line">
+              <span class="fade-word w-4">Minds</span>
+            </span>
+          </p>
+        </div>
+
+        <div class="fade-item item-button">
+          <button type="button" class="enter-btn" id="sj-globe-dive">
+            <span>Dive in</span>
+            <span class="enter-dot" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="hosts fade-item item-partner">
+          <span class="hosts-title">■ Hosted by</span>
+          <div class="hosts-names">
+            <span>MBCCET, Peermade</span>
+            <span>SJEC, Mangaluru</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="globe-footer">SJ-BIESH 2027 is a multidisciplinary international conference hosted by MBCCET and SJEC from May 27–29, 2027, uniting engineering, science, and humanities for sustainable solutions. It provides a global platform for researchers and professionals to collaborate across thirteen diverse academic tracks.</p>
+    </div>
+
+  </div>
 
   <!--==========================
     Header
@@ -513,6 +586,7 @@
   <script src="lib/gsap/gsap.min.js"></script>
   <script src="lib/gsap/ScrollTrigger.min.js"></script>
   <script type="module" src="js/paper/paperScroll.js"></script>
+  <script type="module" src="js/globe-intro.js"></script>
 </body>
 
 </html>
