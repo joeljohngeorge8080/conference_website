@@ -403,7 +403,7 @@ body.mobile-nav-active { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   gap: 8px 28px;
-  margin: 0 0 22px;
+  margin: 22px 0 0;
   padding: 0;
   list-style: none;
   font-size: 1rem;
@@ -514,7 +514,7 @@ body.mobile-nav-active { overflow: hidden; }
     opacity: 1;
     transition: opacity 0.9s ease-out 1s;
   }
-  .js-arrival.is-arrived .sj-meta { transition-delay: 0.45s; }
+  .js-arrival.is-arrived .sj-meta { transition-delay: 1s; }
   /* Keep the header's own transitions (hide on scroll) alongside the fade */
   .js-arrival.is-arrived #header {
     opacity: 1;
