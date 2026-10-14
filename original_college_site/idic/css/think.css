@@ -1052,6 +1052,7 @@ html.tf-lb-open { overflow: hidden; }
   white-space: nowrap;
   color: var(--on-dark);
 }
+#footer .credits .credit-name { color: var(--on-dark); }
 /* Scroll-up reveal: main.js splits the mark into letters and sets --rise
    (0 hidden .. 1 shown, eased) from scroll. Each letter starts a little later
    than the one before (--i), so the word rises as a wave and sinks back the
