@@ -256,36 +256,6 @@ jQuery(document).ready(function( $ ) {
     frame();
   })();
 
-  // Committee portraits: clicking a photo opens it larger in a modal <dialog>.
-  // Esc closes it natively; a click on the backdrop or the close button does too.
-  ;(function () {
-    var dlg = document.querySelector('.tf-lightbox');
-    if (!dlg || typeof dlg.showModal !== 'function') { return; }
-    var big = dlg.querySelector('img');
-    var name = dlg.querySelector('figcaption strong');
-    var role = dlg.querySelector('figcaption span');
-    var root = document.documentElement;
-    var opener = null;
-
-    $(document).on('click', '.tf-portrait-btn', function () {
-      var li = $(this).closest('li');
-      opener = this;
-      big.src = this.querySelector('img').getAttribute('src');
-      name.textContent = li.find('strong').first().text();
-      role.textContent = li.find('span').first().text();
-      big.alt = name.textContent;
-      root.classList.add('tf-lb-open');
-      dlg.showModal();
-    });
-    dlg.addEventListener('click', function (e) {
-      if (e.target === dlg || e.target.closest('.tf-lightbox-close')) { dlg.close(); }
-    });
-    dlg.addEventListener('close', function () {
-      root.classList.remove('tf-lb-open');
-      if (opener) { opener.focus(); opener = null; }
-    });
-  })();
-
   // Important dates enter one by one, in order, and the venue photos wipe in,
   // the first time each scrolls into view. Content is only hidden once JS has
   // confirmed it can reveal it again.
