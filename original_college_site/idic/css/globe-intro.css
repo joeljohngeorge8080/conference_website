@@ -13,9 +13,9 @@
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background-color: #07090b; /* --ink in think.css */
+  background-color: var(--ink, #07090b);
   font-family: 'Inter', sans-serif;
-  color: #fff;
+  color: var(--on-dark, #eef1ec);
   /* 0.7s: keep in step with FADE_MS in js/globe-intro.js */
   transition: opacity 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -36,7 +36,7 @@
 #sj-globe .globe-loader {
   position: absolute;
   inset: 0;
-  background-color: #07090b;
+  background-color: var(--ink, #07090b);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,7 +53,7 @@
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 4px;
-  color: #fff;
+  color: var(--on-dark, #eef1ec);
   text-transform: uppercase;
   will-change: transform;
 }
@@ -93,13 +93,13 @@
   padding: 0 4px;
   background: none;
   border: 0;
-  color: #aaa;
+  color: var(--on-dark-soft, #aeb8b2);
   font: 500 11px/44px 'Inter', sans-serif;
   letter-spacing: 2px;
   text-transform: uppercase;
   transition: color 0.2s;
 }
-#sj-globe .globe-skip:hover { color: #fff; }
+#sj-globe .globe-skip:hover { color: var(--turmeric, #f2b84b); }
 
 #sj-globe .globe-hero {
   position: absolute;
@@ -149,9 +149,9 @@
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #f2b84b;
+  color: var(--turmeric, #f2b84b);
   font-weight: 500;
-  text-shadow: 0 0 10px rgba(242, 184, 75, 0.4);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--turmeric, #f2b84b) 40%, transparent);
   white-space: nowrap;
 }
 
@@ -163,9 +163,9 @@
   line-height: 0.92;
   letter-spacing: -0.015em;
   margin: 0;
-  color: #fff;
+  color: var(--on-dark, #eef1ec);
   text-transform: none;
-  text-shadow: 0 0 35px rgba(255, 255, 255, 0.35), 0 15px 45px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 35px rgba(238, 241, 236, 0.35), 0 15px 45px rgba(7, 9, 11, 0.8);
   text-align: center;
 }
 #sj-globe .hero-title .line { display: block; }
@@ -176,8 +176,8 @@
   align-items: center;
   gap: 12px;
   min-height: 44px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #000;
+  background: var(--turmeric, #f2b84b);
+  color: var(--ink, #07090b);
   padding: 13px 30px;
   border: 0;
   border-radius: 30px;
@@ -187,19 +187,19 @@
   transition: background 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
-#sj-globe .enter-btn:hover { background: #fff; transform: scale(1.05); }
-#sj-globe .enter-dot { width: 8px; height: 8px; background-color: #ff5500; border-radius: 50%; }
+#sj-globe .enter-btn:hover { background: var(--on-dark, #eef1ec); transform: scale(1.05); }
+#sj-globe .enter-dot { width: 8px; height: 8px; background-color: var(--ink, #07090b); border-radius: 50%; }
 
 #sj-globe .enter-btn:focus-visible,
-#sj-globe .globe-skip:focus-visible { outline: 2px solid #f2b84b; outline-offset: 4px; }
+#sj-globe .globe-skip:focus-visible { outline: 2px solid var(--turmeric, #f2b84b); outline-offset: 4px; }
 
 #sj-globe .hosts { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 #sj-globe .hosts-title {
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #f2b84b;
-  text-shadow: 0 0 10px rgba(242, 184, 75, 0.4);
+  color: var(--turmeric, #f2b84b);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--turmeric, #f2b84b) 40%, transparent);
 }
 #sj-globe .hosts-names {
   display: flex;
@@ -209,14 +209,15 @@
   gap: 8px 30px;
   font-size: 12px;
   font-weight: 500;
-  color: #bbb;
+  color: var(--on-dark-soft, #aeb8b2);
   letter-spacing: 1px;
 }
 
 #sj-globe .globe-footer {
   max-width: 380px;
   line-height: 1.5;
-  color: #888;
+  color: var(--on-dark-soft, #aeb8b2);
+  opacity: 0.8;
   font-size: 10px;
   letter-spacing: 1px;
   margin: 0;
