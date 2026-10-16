@@ -53,3 +53,7 @@ Resize gallery photos to about 1800 px wide, save them as JPEG at around 80% qua
 The site is built on the TheEvent template by BootstrapMade (Bootstrap 3 and jQuery) and restyled. Template licence terms are at https://bootstrapmade.com/license/.
 
 Developed by Joel John George, Reno Cherian and Jittu Bijju.
+
+## Licence
+
+The code in this repository is released under the MIT Licence; see `LICENSE`. This covers the code, not the conference content. The text, photos and logos belong to MBCCET and SJEC, and the bundled libraries and template keep their own licences.
