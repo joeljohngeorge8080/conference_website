@@ -869,6 +869,40 @@ body.mobile-nav-active { overflow: hidden; }
 }
 #speakers .tf-placeholder { min-height: 220px; }
 
+/* Venue gallery: first photo full width, the rest in pairs. Square tiles, hairline-free gaps. */
+.sj-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.sj-gallery-item {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  background: var(--mist-2);
+}
+.sj-gallery-item:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+.sj-gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sj-gallery-item:focus-visible { outline: 2px solid var(--laterite); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .sj-gallery-item img { transition: opacity 0.3s var(--ease-out); }
+  .sj-gallery-item:hover img { opacity: 0.86; }
+}
+@media (max-width: 575px) {
+  .sj-gallery { grid-template-columns: 1fr; }
+  .sj-gallery-item:first-child { aspect-ratio: 3 / 2; }
+}
+
+/* Email in the contact list reads as a link, not a placeholder */
+.sj-contact a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.sj-contact a:focus-visible { outline: 2px solid var(--turmeric); outline-offset: 3px; }
+
 /*---------------- Committee ----------------*/
 
 .tf-group { margin-bottom: clamp(40px, 5vw, 64px); }
