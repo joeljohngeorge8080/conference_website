@@ -898,6 +898,14 @@ body.mobile-nav-active { overflow: hidden; }
   .sj-gallery { grid-template-columns: 1fr; }
   .sj-gallery-item:first-child { aspect-ratio: 3 / 2; }
 }
+/* One group per college: a sentence-case subheading above its own grid */
+.sj-gallery-group + .sj-gallery-group { margin-top: clamp(40px, 5vw, 64px); }
+.sj-gallery-title {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
 
 /* Email in the contact list reads as a link, not a placeholder */
 .sj-contact a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
