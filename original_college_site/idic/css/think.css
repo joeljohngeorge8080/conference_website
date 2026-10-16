@@ -945,6 +945,10 @@ body.mobile-nav-active { overflow: hidden; }
 }
 .tf-has-photo > div strong { font-size: 1.05rem; }
 .tf-group .tf-more .tf-people { margin-top: 0; }
+/* Chief Patrons: a touch larger than the other portrait groups */
+.tf-group-lead .tf-people:has(.tf-has-photo) { grid-template-columns: repeat(auto-fill, minmax(0, 340px)); }
+.tf-group-lead .tf-portrait { width: 340px; }
+.tf-group-lead .tf-has-photo > div strong { font-size: 1.15rem; }
 
 /*---------------- Venue ----------------*/
 
